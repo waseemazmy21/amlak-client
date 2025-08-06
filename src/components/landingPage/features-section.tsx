@@ -47,7 +47,7 @@ const FeaturesSection = () => {
           {features.map((feature, index) => (
             <Card
               key={index}
-              className="group hover:shadow-3xl transition-all duration-300 border border-border shadow  "
+              className="group transition-all duration-300 shadow-sm hover:shadow-xl border-border"
             >
               <CardContent className="p-6 md:p-8 text-center">
                 <div
