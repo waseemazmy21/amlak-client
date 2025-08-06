@@ -1,5 +1,5 @@
-import Footer from '@/components/layout/Footer';
-import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/footer';
+import Header from '@/components/layout/header';
 import React from 'react'
 
 const MainLayout = ({
@@ -9,7 +9,7 @@ const MainLayout = ({
 }>) => {
     return (
         <div>
-            <Navbar />
+            <Header />
             {children}
             <Footer />
         </div>
