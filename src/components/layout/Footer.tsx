@@ -139,7 +139,7 @@ const Footer = () => {
                 <Separator className="my-8" />
 
                 <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                    <div className="text-sm text-muted-foreground">© 2024 Amlak. All rights reserved.</div>
+                    <div className="text-sm text-muted-foreground">© {new Date().getFullYear()} Amlak. All rights reserved.</div>
                     <div className="flex space-x-6">
                         <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                             Privacy Policy
