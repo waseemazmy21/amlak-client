@@ -90,7 +90,7 @@ export default function LoginPage() {
                     {/* Submit Button */}
                     <Button
                         type="submit"
-                        className="w-full h-12 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                        className="w-full h-12 bg-primary hover:bg-primary/90  text-white font-semibold shadow-lg hover:shadow-xl transform"
                         disabled={isSubmitting}
                     >
                         {isSubmitting ? 'Logining In...' : (<><span>Login In</span><ArrowRight className="ml-2 h-5 w-5" /></>)}
@@ -101,7 +101,7 @@ export default function LoginPage() {
                 <div className="text-center">
                     <p className="text-sm text-gray-600">
                         Don't have an account?{' '}
-                        <Link href="/auth/register" className="text-blue-600 hover:text-blue-700 font-medium">
+                        <Link href="/register" className="text-primary font-medium">
                             Sign up here
                         </Link>
                     </p>

@@ -18,7 +18,7 @@ export default function RegisterPage() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const { setUser } = useAuth();
     const [error, setError] = useState('');
-    const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm<RegisterRequest>();
+    const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<RegisterRequest>();
     const router = useRouter()
 
     const onSubmit: SubmitHandler<RegisterRequest> = async (data) => {
@@ -142,7 +142,7 @@ export default function RegisterPage() {
                     <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full h-12 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                        className="w-full h-12 bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                     >
                         {isSubmitting ? 'Creating Account...' : (<><span>Create Account</span><ArrowRight className="ml-2 h-5 w-5" /></>)}
                     </Button>
@@ -152,7 +152,7 @@ export default function RegisterPage() {
                 <div className="text-center">
                     <p className="text-sm text-gray-600">
                         Already have an account?{' '}
-                        <Link href="/auth/login" className="text-blue-600 hover:text-blue-700 font-medium">
+                        <Link href="/login" className="text-primary text-primary/90 font-medium">
                             Sign in here
                         </Link>
                     </p>
