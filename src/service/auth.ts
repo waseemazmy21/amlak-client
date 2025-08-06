@@ -28,3 +28,8 @@ export async function getUser() {
     const res = await api.get('/auth/me');
     return res;
 }
+
+export async function logout() {
+    const res = await api.post('/auth/logout')
+    return res
+}

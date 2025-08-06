@@ -2,11 +2,13 @@
 
 import { createContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '@/lib/types';
+import { logout as logoutService } from '@/service/auth';
 
 export type AuthContextType = {
     user: User | null;
     setUser: (user: User | null) => void;
-    loading: boolean
+    loading: boolean;
+    logout: () => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,8 +33,18 @@ function AuthProvider({ children }: { children: ReactNode }) {
         }
     }, [user]);
 
+    const logout = async () => {
+        try {
+            await logoutService();
+        } catch (error) {
+            console.error(error)
+        }
+        setUser(null);
+        localStorage.removeItem('user');
+    };
+
     return (
-        <AuthContext.Provider value={{ user, setUser, loading }}>
+        <AuthContext.Provider value={{ user, setUser, loading, logout }}>
             {children}
         </AuthContext.Provider>
     );

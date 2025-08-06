@@ -12,10 +12,10 @@ import { DialogTitle } from "@radix-ui/react-dialog"
 
 export function MobileMenu() {
   const [open, setOpen] = useState(false)
-  const { user, loading } = useAuth()
+  const { user, loading, logout } = useAuth()
 
-  const handleLogout = () => {
-    console.log("Logging out...")
+  const handleLogout = async () => {
+    await logout()
     window.location.href = "/login"
     setOpen(false)
   }
@@ -120,13 +120,13 @@ export function MobileMenu() {
             {user ? (
               <Button variant="outline" className="w-full justify-start bg-transparent" onClick={handleLogout}>
                 <LogOut className="h-4 w-4 mr-2" />
-                Sign Out
+                Log Out
               </Button>
             ) : (
               <div className="space-y-2">
                 <Button asChild className="w-full">
                   <Link href="/login" onClick={closeMenu}>
-                    Sign In
+                    Log In
                   </Link>
                 </Button>
                 <Button variant="outline" asChild className="w-full bg-transparent">

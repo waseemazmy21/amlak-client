@@ -16,10 +16,10 @@ import { MobileMenu } from "./mobile-menu"
 import useAuth from "@/hooks/useAuth"
 
 const Header = () => {
-  const { user, loading } = useAuth()
+  const { user, loading, logout } = useAuth()
 
-  const handleLogout = () => {
-    console.log("Logging out...")
+  const handleLogout = async () => {
+    await logout()
     window.location.href = "/login"
   }
 
