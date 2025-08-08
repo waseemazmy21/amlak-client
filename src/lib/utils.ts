@@ -10,15 +10,19 @@ export function cn(...inputs: ClassValue[]) {
 export function handleError(error: unknown): string {
   if (axios.isAxiosError(error)) {
     if (!error.response) {
-      return 'Network error: Please check your internet connection.'
+      return navigator.onLine ? "Server is down Please try again later" :
+        'Network error: Please check your internet connection.'
     }
 
     const status = error.response.status
     const data = error.response.data
 
-    if (status === 404 || status === 500) {
+    if (status === 500) {
       return 'Server is down, Please try again later.'
-    } else if (data && typeof data === 'object' && 'message' in data) {
+    } else if (status === 400) {
+      return 'Not Found Error.'
+    }
+    else if (data && typeof data === 'object' && 'message' in data) {
       return (data as any).message
     }
 
