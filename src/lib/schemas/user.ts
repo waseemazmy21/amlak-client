@@ -47,10 +47,9 @@ export type LoginFormData = z.infer<typeof loginSchema>
 export const updateUserSchema = z.object({
     fullName: fullName.optional(),
     email: email.optional(),
-    password: password.optional(),
     phone: phone.optional(),
     bio,
-}).strict();
+});
 
 export type UpdateUserFormData = z.infer<typeof updateUserSchema>
 

@@ -1,32 +1,59 @@
 "use client";
-import ProtectedRoute from '@/components/ProtectedRoute';
-import useAuth from '@/hooks/useAuth';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import ProfileSidebar from '@/components/profile/profile-sidebar';
+import { useQuery } from '@tanstack/react-query';
+import { getUser } from '@/service/auth';
+import Loading from '@/components/global/loading';
+import Error from '@/components/global/error';
+import { User } from '@/lib/types';
+import { handleError } from '@/lib/utils';
+import ProfileOverview from '@/components/profile/profile-overview';
 
 export default function ProfilePage() {
-    const { user } = useAuth();
+    const { data: user, isLoading, error, isError } = useQuery({
+        queryKey: ['user'],
+        queryFn: async () => {
+            const res = await getUser()
+            return res.data.data.user as User
+        }
+    })
+
+    if (isLoading) {
+        return <Loading />
+    }
+
+    if (isError) {
+        return <Error
+            message={handleError(error)}
+            retry={() => window.location.reload()}
+        />
+    }
+
+    if (!user) {
+        return <Error
+            message={"User NOt Found!"}
+        />
+    }
 
     return (
-        <ProtectedRoute>
-            <div className="flex justify-center items-center min-h-screen">
-                <Card className="w-full max-w-md">
-                    <CardHeader>
-                        <CardTitle>Profile</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-4">
-                            <div><strong>Name:</strong> {user?.fullName}</div>
-                            <div><strong>Email:</strong> {user?.email}</div>
-                            {/* Add more fields as needed */}
-                            <Link href="/profile/update">
-                                <Button className="mt-4 w-full">Edit Profile</Button>
-                            </Link>
-                        </div>
-                    </CardContent>
-                </Card>
+        <div className="min-h-screen bg-background">
+            <div className="container mx-auto px-4 py-8">
+                <div className="mb-8">
+                    <h1 className="text-3xl font-bold mb-2">My Profile</h1>
+                    <p className="text-muted-foreground">Manage your account settings and view your properties</p>
+                </div>
+
+                <div className="grid lg:grid-cols-4 gap-8">
+                    {/* Sidebar */}
+                    <div className="lg:col-span-1">
+                        <ProfileSidebar user={user} />
+                    </div>
+
+                    {/* Main Content */}
+                    <div className="lg:col-span-3">
+                        <ProfileOverview user={user} />
+                    </div>
+                </div>
             </div>
-        </ProtectedRoute>
-    );
+        </div>
+    )
 }

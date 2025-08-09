@@ -17,9 +17,9 @@ const CTASection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              variant="secondary"
+              variant="default"
               asChild
-              className="text-base md:text-lg px-6 md:px-8 py-4 md:py-6 bg-white text-primary hover:bg-white/90 shadow-lg"
+              className="text-base md:text-lg px-6 md:px-8 py-4 md:py-6 bg-white/90 hover:bg-white text-gray-900 "
             >
               <Link href="/listings">Start Searching Now</Link>
             </Button>
@@ -27,7 +27,7 @@ const CTASection = () => {
               size="lg"
               variant="outline"
               asChild
-              className="text-base md:text-lg px-6 md:px-8 py-4 md:py-6 text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground/10 bg-transparent"
+              className="text-base md:text-lg px-6 md:px-8 py-4 md:py-6 bg-foreground text-background"
             >
               <Link href="/add-property">List Your Property</Link>
             </Button>
