@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
-import { Menu, Home, Search, Plus, User, LogOut, Settings, X } from "lucide-react"
+import { Menu, Home, Search, Plus, User, LogOut, Settings } from "lucide-react"
 import useAuth from "@/hooks/useAuth"
 import { DialogTitle } from "@radix-ui/react-dialog"
 

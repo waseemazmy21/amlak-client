@@ -1,26 +1,20 @@
+import { LoginFormData, RegisterFormData } from '@/lib/schemas/user';
 import api from './axios';
 
-export type LoginRequest = {
-    email: string;
-    password: string;
-};
-
-
-export type RegisterRequest = {
-    fullName: string;
-    email: string;
-    password: string;
-    confirmPassword?: string;
-};
-
-
-export async function login(data: LoginRequest) {
+export async function login(data: LoginFormData) {
     const res = await api.post('/auth/login', data)
     return res;
 }
 
-export async function register(data: RegisterRequest) {
-    const res = await api.post('/auth/register', data);
+export async function register(data: RegisterFormData) {
+    const { fullName, email, password, phone, bio } = data
+    const res = await api.post('/auth/register', {
+        fullName,
+        email,
+        password,
+        phone,
+        bio: bio || undefined
+    });
     return res;
 }
 

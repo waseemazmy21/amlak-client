@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -16,14 +16,15 @@ export function handleError(error: unknown): string {
 
     const status = error.response.status
     const data = error.response.data
-
+    console.log(status, data)
     if (status === 500) {
       return 'Server is down, Please try again later.'
-    } else if (status === 400) {
+    } else if (status === 404) {
       return 'Not Found Error.'
     }
     else if (data && typeof data === 'object' && 'message' in data) {
-      return (data as any).message
+      console.log(data)
+      return data.message;
     }
 
     return 'An unexpected error occurred.'
