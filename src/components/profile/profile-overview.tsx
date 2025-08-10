@@ -14,34 +14,44 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { updateUser } from '@/service/user'
 import useAuth from '@/hooks/useAuth'
 import { handleError } from '@/lib/utils'
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner'
 
 
 
-const ProfileOverview = ({ user }: { user: User }) => {
+const ProfileOverview = () => {
+    const { user } = useAuth()
+    const queryClient = useQueryClient()
     const [isEditing, setIsEditing] = useState<boolean>(false)
-    const [error, setError] = useState<string>("")
 
-    const { handleSubmit, register, formState: { isSubmitting, errors } } = useForm<UpdateUserFormData>({
+    if (!user) return null;
+
+
+    const { handleSubmit, register, reset, formState: { isSubmitting, errors } } = useForm<UpdateUserFormData>({
         resolver: zodResolver(updateUserSchema),
         defaultValues: user
     })
 
-    const onSubmit: SubmitHandler<UpdateUserFormData> = async (data) => {
-        setError('');
-        console.log('submit')
-        try {
+    const { mutate: mutateUpdateUser, isPending } = useMutation({
+        mutationFn: async (data: UpdateUserFormData) => {
             const res = await updateUser(data, user._id);
-            console.log(res.data.data.user)
-            setIsEditing(false)
-        } catch (err: unknown) {
-            setError(handleError(err));
-            console.log(err)
+            return res.data.data.user as User
+        },
+        onSuccess: (user) => {
+            queryClient.setQueryData(['user'], user); // Update cached user
+            reset(user); // update form default values
+            toast.success('Profile updated successfully');
+            setIsEditing(false);
+        },
+        onError: (err: unknown) => {
+            toast.error(handleError(err));
         }
+    });
+
+    const onSubmit: SubmitHandler<UpdateUserFormData> = async (data) => {
+        mutateUpdateUser(data)
     };
 
-    console.log("form errors: ", errors)
-
-    if (!user) { return <></> }
 
     return (
         <div className="space-y-6">
@@ -80,9 +90,9 @@ const ProfileOverview = ({ user }: { user: User }) => {
                                 {errors.bio && <p className="text-sm text-destructive">{errors.bio.message}</p>}
                             </div>
                             <div className="flex gap-2">
-                                <Button type="submit" disabled={isSubmitting} className='disabled:bg-primary/80'>
+                                <Button type="submit" disabled={isPending} className='disabled:bg-primary/80'>
                                     <Save className="h-4 w-4 mr-2" />
-                                    {isSubmitting ? "Saving..." : "Save Changes"}
+                                    {isPending ? "Saving..." : "Save Changes"}
                                 </Button>
                                 <Button type="button" variant="outline" onClick={() => { setIsEditing(false) }}>
                                     Cancel

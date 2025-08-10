@@ -5,14 +5,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Camera, Heart, Home, UserIcon } from 'lucide-react'
 import { User } from "@/lib/types"
+import useAuth from "@/hooks/useAuth"
 
-interface ProfileSidebarProps {
-    user: User | null
-}
 
-export function ProfileSidebar({
-    user,
-}: ProfileSidebarProps) {
+export function ProfileSidebar() {
+    const { user } = useAuth()
+
     if (!user) return <></>
 
     return (

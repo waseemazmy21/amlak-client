@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { handleError } from '@/lib/utils';
-import useAuth from '@/hooks/useAuth';
 import { register as registerUser } from '@/service/auth';
 import { useRouter } from 'next/navigation';
 import { Textarea } from '@/components/ui/textarea';
@@ -20,7 +19,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const { setUser } = useAuth();
     const [error, setError] = useState('');
     const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<RegisterFormData>({
         resolver: zodResolver(registerSchema)
@@ -32,7 +30,6 @@ export default function RegisterPage() {
         try {
             const res = await registerUser(data);
             console.log(res.data)
-            setUser(res.data.data.user)
             router.push('/home')
         } catch (err: unknown) {
             setError(handleError(err));

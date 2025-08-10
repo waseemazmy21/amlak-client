@@ -1,50 +1,50 @@
-'use client'
+'use client';
 
-import { createContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, ReactNode, useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { User } from '@/lib/types';
-import { logout as logoutService } from '@/service/auth';
+import { getUser } from '@/service/auth';
 
 export type AuthContextType = {
     user: User | null;
-    setUser: (user: User | null) => void;
     loading: boolean;
-    logout: () => Promise<void>;
+    error: unknown;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 function AuthProvider({ children }: { children: ReactNode }) {
-    const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [hydrated, setHydrated] = useState(false);
 
+    // Ensure this only runs on client to avoid SSR null flash
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
-        }
-        setLoading(false);
+        setHydrated(true);
     }, []);
 
-    useEffect(() => {
-        if (user) {
-            localStorage.setItem('user', JSON.stringify(user));
-        } else {
-            localStorage.removeItem('user');
-        }
-    }, [user]);
+    const {
+        data: user,
+        isLoading,
+        error,
+    } = useQuery({
+        queryKey: ['user'],
+        queryFn: async () => {
+            const res = await getUser()
+            return res.data.data.user as User
+        },
+        staleTime: 5 * 60 * 1000, // cache for 5 minutes
+        enabled: hydrated, // don't fetch until mounted on client
+    });
 
-    const logout = async () => {
-        try {
-            await logoutService();
-        } catch (error) {
-            console.error(error)
-        }
-        setUser(null);
-        localStorage.removeItem('user');
-    };
+    const loading = !hydrated || isLoading;
 
     return (
-        <AuthContext.Provider value={{ user, setUser, loading, logout }}>
+        <AuthContext.Provider
+            value={{
+                user: user || null,
+                loading,
+                error,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );

@@ -14,9 +14,11 @@ import {
 import { Home, Plus, Search, User, LogOut, Settings } from "lucide-react"
 import { MobileMenu } from "./mobile-menu"
 import useAuth from "@/hooks/useAuth"
+import { useLogout } from "@/hooks/useLogout"
 
 const Header = () => {
-  const { user, loading, logout } = useAuth()
+  const { user, loading } = useAuth()
+  const { logout, error, isPending } = useLogout()
 
   const handleLogout = async () => {
     await logout()

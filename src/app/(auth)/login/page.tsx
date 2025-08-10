@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { handleError } from '@/lib/utils';
-import useAuth from '@/hooks/useAuth';
 import { login } from '@/service/auth';
 import { useRouter } from 'next/navigation';
 import { LoginFormData, loginSchema } from '@/lib/schemas/user';
@@ -19,7 +18,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
-    const { setUser } = useAuth();
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema)
     });
@@ -29,7 +27,6 @@ export default function LoginPage() {
         setError('');
         try {
             const res = await login(data);
-            setUser(res.data.data.user)
             router.push('/home')
         } catch (err: unknown) {
             setError(handleError(err));

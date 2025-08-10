@@ -7,21 +7,16 @@ import Error from '@/components/global/error';
 import { User } from '@/lib/types';
 import { handleError } from '@/lib/utils';
 import ProfileOverview from '@/components/profile/profile-overview';
+import useAuth from '@/hooks/useAuth';
 
 export default function ProfilePage() {
-    const { data: user, isLoading, error, isError } = useQuery({
-        queryKey: ['user'],
-        queryFn: async () => {
-            const res = await getUser()
-            return res.data.data.user as User
-        }
-    })
+    const { user, loading, error } = useAuth()
 
-    if (isLoading) {
+    if (loading) {
         return <Loading />
     }
 
-    if (isError) {
+    if (error) {
         return <Error
             message={handleError(error)}
             retry={() => window.location.reload()}
@@ -45,12 +40,12 @@ export default function ProfilePage() {
                 <div className="grid lg:grid-cols-4 gap-8">
                     {/* Sidebar */}
                     <div className="lg:col-span-1">
-                        <ProfileSidebar user={user} />
+                        <ProfileSidebar />
                     </div>
 
                     {/* Main Content */}
                     <div className="lg:col-span-3">
-                        <ProfileOverview user={user} />
+                        <ProfileOverview />
                     </div>
                 </div>
             </div>

@@ -9,10 +9,13 @@ import { Separator } from "@/components/ui/separator"
 import { Menu, Home, Search, Plus, User, LogOut, Settings } from "lucide-react"
 import useAuth from "@/hooks/useAuth"
 import { DialogTitle } from "@radix-ui/react-dialog"
+import { useLogout } from "@/hooks/useLogout"
 
 export function MobileMenu() {
   const [open, setOpen] = useState(false)
-  const { user, loading, logout } = useAuth()
+  const { user, loading } = useAuth()
+  const { logout, error, isPending } = useLogout()
+
 
   const handleLogout = async () => {
     await logout()
