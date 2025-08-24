@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight, Home } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User as UserIcon, Phone, ArrowRight, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -14,26 +14,37 @@ import { useRouter } from 'next/navigation';
 import { Textarea } from '@/components/ui/textarea';
 import { RegisterFormData, registerSchema } from '@/lib/schemas/user';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { User } from '@/lib/types';
 
 
 export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const queryClient = useQueryClient()
     const [error, setError] = useState('');
-    const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<RegisterFormData>({
-        resolver: zodResolver(registerSchema)
-    });
     const router = useRouter()
 
-    const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
-        setError('');
-        try {
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<RegisterFormData>({
+        resolver: zodResolver(registerSchema)
+    });
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: async (data: RegisterFormData) => {
             const res = await registerUser(data);
-            console.log(res.data)
+            return res.data.data.user as User;
+        },
+        onSuccess: (user: User) => {
+            queryClient.setQueryData(['user'], user)
             router.push('/home')
-        } catch (err: unknown) {
-            setError(handleError(err));
+        },
+        onError: (err) => {
+            setError(handleError(err))
         }
+    })
+
+    const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
+        mutate(data)
     };
 
     return (
@@ -61,7 +72,7 @@ export default function RegisterPage() {
                                     Full Name
                                 </Label>
                                 <div className="relative">
-                                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                                    <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                                     <Input
                                         id="fullName"
                                         type="text"
@@ -181,10 +192,10 @@ export default function RegisterPage() {
                         {/* Submit Button */}
                         <Button
                             type="submit"
-                            disabled={isSubmitting}
+                            disabled={isPending}
                             className="w-full h-12 bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                         >
-                            {isSubmitting ? 'Creating Account...' : (<><span>Create Account</span><ArrowRight className="ml-2 h-5 w-5" /></>)}
+                            {isPending ? 'Creating Account...' : (<><span>Create Account</span><ArrowRight className="ml-2 h-5 w-5" /></>)}
                         </Button>
                     </form>
 

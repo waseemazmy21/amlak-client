@@ -13,24 +13,36 @@ import { login } from '@/service/auth';
 import { useRouter } from 'next/navigation';
 import { LoginFormData, loginSchema } from '@/lib/schemas/user';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { User } from '@/lib/types';
 
 
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormData>({
+    const router = useRouter();
+    const queryClient = useQueryClient();
+
+    const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema)
     });
-    const router = useRouter()
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: async (data: LoginFormData) => {
+            const res = await login(data);
+            return res.data.data.user as User;
+        },
+        onSuccess: (user: User) => {
+            queryClient.setQueryData(['user'], user)
+            router.push('/home')
+        },
+        onError: (err) => {
+            setError(handleError(err))
+        }
+    })
 
     const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
-        setError('');
-        try {
-            const res = await login(data);
-            router.push('/home')
-        } catch (err: unknown) {
-            setError(handleError(err));
-        }
+        mutate(data)
     };
 
     return (
@@ -101,9 +113,9 @@ export default function LoginPage() {
                         <Button
                             type="submit"
                             className="w-full h-12 bg-primary hover:bg-primary/90  text-white font-semibold shadow-lg hover:shadow-xl transform"
-                            disabled={isSubmitting}
+                            disabled={isPending}
                         >
-                            {isSubmitting ? 'Logining In...' : (<><span>Login In</span><ArrowRight className="ml-2 h-5 w-5" /></>)}
+                            {isPending ? 'Logining In...' : (<><span>Login In</span><ArrowRight className="ml-2 h-5 w-5" /></>)}
                         </Button>
                     </form>
 

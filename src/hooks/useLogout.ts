@@ -13,7 +13,7 @@ export function useLogout() {
     } = useMutation({
         mutationFn: logoutService,
         onSuccess: () => {
-            queryClient.setQueryData(['currentUser'], null);
+            queryClient.setQueryData(['user'], null);
         },
     });
 
