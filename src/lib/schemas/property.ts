@@ -17,7 +17,7 @@ export const propertySchema = z.object({
         .string()
         .min(VALIDATION_LIMITS.MIN_DESCRIPTION_LENGTH, "Description must be at least 20 characters"),
 
-    price: z.coerce
+    price: z
         .number()
         .min(1, "Price must be greater than 0"),
 
@@ -32,19 +32,19 @@ export const propertySchema = z.object({
 
     propertyType: z.enum(["house", "apartment", "condo", "townhouse", "land"]),
 
-    bedrooms: z.coerce
+    bedrooms: z
         .number()
         .min(0, "Bedrooms must be 0 or more"),
 
-    bathrooms: z.coerce
+    bathrooms: z
         .number()
         .min(0, "Bathrooms must be 0 or more"),
 
-    area: z.coerce
+    area: z
         .number()
         .min(1, "Square footage must be greater than 0"),
 
-    yearBuilt: z.coerce
+    yearBuilt: z
         .number()
         .min(VALIDATION_LIMITS.MIN_YEAR_BUILT, "Year built must be valid")
         .max(VALIDATION_LIMITS.MAX_YEAR_BUILT, "Year cannot be in the future"),

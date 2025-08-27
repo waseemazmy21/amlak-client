@@ -1,35 +1,63 @@
 export type PropertyType = "house" | "apartment" | "condo" | "townhouse" | "land"
 
-export interface PropertyFormData {
+export type Property = {
+    _id: string
     title: string
     description: string
     price: number
-    address: string
-    city: string
-    state: string
-    zipCode: string
+    location: {
+        address: string
+        city: string
+        state: string
+    }
     propertyType: PropertyType
     bedrooms: number
     bathrooms: number
-    squareFootage: number
+    area: number
     yearBuilt: number
     features: string[]
+    images: string[]
+    createdAt: string
+    updatedAt: string
 }
 
-export interface PropertyFormProps {
-    onSubmit: (data: PropertyFormData) => void
-    isSubmitting?: boolean
+export interface PropertyFilters {
+    search?: string
+    minPrice?: number
+    maxPrice?: number
+    propertyType?: string
+    minBedrooms?: number
+    maxBedrooms?: number
+    minBathrooms?: number
+    maxBathrooms?: number
+    page?: number
+    limit?: number
 }
 
-export interface FeatureManagementProps {
-    selectedFeatures: string[]
-    onFeatureToggle: (feature: string) => void
-    onAddCustomFeature: (feature: string) => void
-    onRemoveFeature: (feature: string) => void
-    errors?: string
+export const DeafultPropertyFilters: PropertyFilters = {
+    search: '',
+    minPrice: undefined,
+    maxPrice: undefined,
+    propertyType: '',
+    minBedrooms: undefined,
+    maxBedrooms: undefined,
+    minBathrooms: undefined,
+    maxBathrooms: undefined,
+    page: 1,
+    limit: 12
 }
 
-export interface PropertyPreviewProps {
-    formData: Partial<PropertyFormData>
-    images: File[]
+export interface PropertyResponse {
+    properties: Property[]
+    totalItems: number
+    totalPages: number
+    currentPage: number
+    itemsPerPage: number
+}
+
+export enum PropertyStatus {
+    ForSale = 'for-sale',
+    ForRent = 'for-rent',
+    Sold = 'sold',
+    Rented = 'rented',
 }

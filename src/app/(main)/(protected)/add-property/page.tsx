@@ -58,7 +58,7 @@ export default function AddPropertyPage() {
         },
         onSuccess: () => {
             toast.success("Property created successfully")
-            // router.push("/properties")
+            router.push("/properties")
         },
         onError: (error) => {
             toast.error(handleError(error))
