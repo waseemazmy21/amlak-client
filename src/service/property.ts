@@ -33,3 +33,8 @@ export const getPropertyByUserId = async (id: string, page: number = 1): Promise
     const res = await api.get(`/properties/user/${id}`, { params: { page } })
     return res.data.data
 }
+
+export const deletePropertyById = async (id: string) => {
+    const res = await api.delete(`/properties/${id}`)
+    return res.data.data
+}

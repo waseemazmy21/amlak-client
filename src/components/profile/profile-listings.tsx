@@ -20,12 +20,13 @@ import type { Property } from "@/types/property"
 import { Edit, Home, Plus, Trash2, ExternalLink } from "lucide-react"
 import { useState } from "react"
 import { formatPrice, formatDate, handleError } from "@/lib/utils"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import useAuth from "@/hooks/useAuth"
-import { getPropertyByUserId } from "@/service/property"
+import { deletePropertyById, getPropertyByUserId } from "@/service/property"
 import Error from "@/components/global/error"
 import Loading from "../global/loading"
 import { PropertyPagination } from "../listings/property-pagination"
+import { toast } from "sonner"
 
 
 export function ProfileListings() {
@@ -38,15 +39,25 @@ export function ProfileListings() {
         queryFn: () => getPropertyByUserId(user._id, currentPage)
     })
 
+    const { mutateAsync: deleteProperty, isPending: deletePropertyPending } = useMutation({
+        mutationFn: deletePropertyById,
+        onSuccess: () => {
+            toast.success("Property deleted successfully")
+        },
+        onError: (error) => {
+            toast.error(handleError(error))
+        }
+    })
+
     const handleDelete = (propertyId: string) => {
-        confirm("Are you sure you want to delete this property?")
+        deleteProperty(propertyId)
     }
 
     if (!data || error) {
         return <Error message={handleError(error)} />
     }
 
-    if (isLoading) {
+    if (isLoading || deletePropertyPending) {
         return <Loading />
     }
 
