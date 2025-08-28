@@ -12,12 +12,12 @@ import { Search, SlidersHorizontal } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { getProperties } from "@/service/property"
 import { DeafultPropertyFilters } from "@/types/property"
+import Loading from "@/components/global/loading"
 
 export default function ListingsPage() {
     const [filters, setFilters] = useState<PropertyFilters>(DeafultPropertyFilters)
     const [showFilters, setShowFilters] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
-    const itemsPerPage = 12
 
     const {
         data,
@@ -119,20 +119,7 @@ export default function ListingsPage() {
                     {/* Main Content */}
                     <div className="lg:col-span-3">
                         {loading ? (
-                            <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
-                                {[...Array(6)].map((_, i) => (
-                                    <Card key={i} className="overflow-hidden bg-muted/20 border-0">
-                                        <div className="h-48 md:h-64 bg-muted animate-pulse" />
-                                        <CardContent className="p-4 md:p-6">
-                                            <div className="space-y-3">
-                                                <div className="h-4 bg-muted rounded animate-pulse" />
-                                                <div className="h-4 bg-muted rounded w-3/4 animate-pulse" />
-                                                <div className="h-6 bg-muted rounded w-1/2 animate-pulse" />
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                ))}
-                            </div>
+                            <Loading />
                         ) : data.properties.length > 0 ? (
                             <>
                                 <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
@@ -147,7 +134,6 @@ export default function ListingsPage() {
                                     totalPages={data.totalPages}
                                     onPageChange={handlePageChange}
                                     totalItems={data.totalItems}
-                                    itemsPerPage={itemsPerPage}
                                 />
                             </>
                         ) : (

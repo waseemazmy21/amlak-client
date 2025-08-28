@@ -55,8 +55,8 @@ export interface PropertyResponse {
     properties: Property[]
     totalItems: number
     totalPages: number
-    currentPage: number
-    itemsPerPage: number
+    page: number
+    limit: number
 }
 
 export enum PropertyStatus {
