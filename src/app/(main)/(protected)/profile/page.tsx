@@ -1,16 +1,17 @@
 "use client";
 import ProfileSidebar from '@/components/profile/profile-sidebar';
-import { useQuery } from '@tanstack/react-query';
-import { getUser } from '@/service/auth';
 import Loading from '@/components/global/loading';
 import Error from '@/components/global/error';
-import { User } from '@/lib/types';
 import { handleError } from '@/lib/utils';
 import ProfileOverview from '@/components/profile/profile-overview';
 import useAuth from '@/hooks/useAuth';
+import { ProfileTabs } from '@/constants/profile';
+import { useState } from 'react';
+import { ProfileListings } from '@/components/profile/profile-listings';
 
 export default function ProfilePage() {
     const { user, loading, error } = useAuth()
+    const [tab, setTab] = useState<ProfileTabs>('overview')
 
     if (loading) {
         return <Loading />
@@ -40,12 +41,13 @@ export default function ProfilePage() {
                 <div className="grid lg:grid-cols-4 gap-8">
                     {/* Sidebar */}
                     <div className="lg:col-span-1">
-                        <ProfileSidebar />
+                        <ProfileSidebar tab={tab} setTab={setTab} />
                     </div>
 
                     {/* Main Content */}
                     <div className="lg:col-span-3">
-                        <ProfileOverview />
+                        {tab === 'overview' && <ProfileOverview />}
+                        {tab === 'listings' && <ProfileListings listings={user.properties} />}
                     </div>
                 </div>
             </div>

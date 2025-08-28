@@ -6,9 +6,14 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Camera, Heart, Home, UserIcon } from 'lucide-react'
 import { User } from "@/lib/types"
 import useAuth from "@/hooks/useAuth"
+import { ProfileTabs } from "@/constants/profile"
 
+interface ProfileSidebarProps {
+    tab: ProfileTabs
+    setTab: (tab: ProfileTabs) => void
+}
 
-export function ProfileSidebar() {
+export function ProfileSidebar({ tab, setTab }: ProfileSidebarProps) {
     const { user } = useAuth()
 
     if (!user) return <></>
@@ -35,6 +40,7 @@ export function ProfileSidebar() {
                     <Button
                         variant="secondary"
                         className="w-full justify-start"
+                        onClick={() => setTab('overview')}
                     >
                         <UserIcon className="h-4 w-4 mr-2" />
                         Overview
@@ -42,16 +48,10 @@ export function ProfileSidebar() {
                     <Button
                         variant="ghost"
                         className="w-full justify-start"
-                    >
-                        <Heart className="h-4 w-4 mr-2" />
-                        Favorites ({5})
-                    </Button>
-                    <Button
-                        variant="ghost"
-                        className="w-full justify-start"
+                        onClick={() => setTab('listings')}
                     >
                         <Home className="h-4 w-4 mr-2" />
-                        My Listings ({50})
+                        My Listings ({user.properties?.length || 0})
                     </Button>
                 </nav>
             </CardContent>
