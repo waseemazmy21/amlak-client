@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { Property } from "@/types/property"
 import { Bed, Bath, Square, MapPin } from "lucide-react"
+import { getStatusColor } from "@/lib/utils"
 
 interface PropertyCardProps {
   property: Property
@@ -18,32 +19,25 @@ export function PropertyCard({ property }: PropertyCardProps) {
     }).format(price)
   }
 
-  const getStatusColor = (status: Property["status"]) => {
-    switch (status) {
-      case "for-sale":
-        return "status-for-sale"
-      case "for-rent":
-        return "status-for-rent"
-      case "sold":
-        return "status-sold"
-      case "rented":
-        return "status-rented"
-      default:
-        return "status-sold"
-    }
-  }
 
   return (
     <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 card-enhanced">
       <div className="relative">
         <Link href={`/listings/${property._id}`}>
           <div className="relative h-48 md:h-64 w-full overflow-hidden">
-            <Image
-              src={property.images[0] || "/property_placeholder.jpg"}
-              alt={property.title}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
-            />
+            {
+              property.images.length > 0 ?
+
+                <Image
+                  src={property.images[0]}
+                  alt={property.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                /> :
+                <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">
+                  no image
+                </div>
+            }
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
           </div>
         </Link>
