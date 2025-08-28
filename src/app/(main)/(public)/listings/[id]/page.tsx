@@ -20,8 +20,6 @@ import {
   Share2,
   Phone,
   Mail,
-  MessageCircle,
-
 } from "lucide-react"
 import Error from "@/components/global/error"
 import Loading from "@/components/global/loading"

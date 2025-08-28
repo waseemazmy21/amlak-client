@@ -15,7 +15,7 @@ import Loading from "../global/loading"
 export function MobileMenu() {
   const [open, setOpen] = useState(false)
   const { user, loading } = useAuth()
-  const { logout, error, isPending } = useLogout()
+  const { logout, isPending } = useLogout()
 
 
   const handleLogout = async () => {

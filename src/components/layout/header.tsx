@@ -19,7 +19,7 @@ import Loading from "../global/loading"
 
 const Header = () => {
   const { user, loading } = useAuth()
-  const { logout, error, isPending } = useLogout()
+  const { logout, isPending } = useLogout()
 
   const handleLogout = async () => {
     await logout()

@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -16,8 +17,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import type { Property } from "@/types/property"
-import { Edit, Home, Plus, Trash2, ExternalLink } from "lucide-react"
+import { Home, Plus, Trash2, ExternalLink } from "lucide-react"
 import { useState } from "react"
 import { formatPrice, formatDate, handleError } from "@/lib/utils"
 import { useMutation, useQuery } from "@tanstack/react-query"
@@ -32,11 +32,10 @@ import { toast } from "sonner"
 export function ProfileListings() {
     const { user } = useAuth()
     const [currentPage, setCurrentPage] = useState(1)
-    if (!user) return;
 
     const { data, isLoading, error } = useQuery({
         queryKey: ['userProperties', currentPage],
-        queryFn: () => getPropertyByUserId(user._id, currentPage)
+        queryFn: () => getPropertyByUserId(user!._id, currentPage)
     })
 
     const { mutateAsync: deleteProperty, isPending: deletePropertyPending } = useMutation({
@@ -61,6 +60,7 @@ export function ProfileListings() {
         return <Loading />
     }
 
+    if (!user) return null;
 
     return (
         <Card>
@@ -100,10 +100,12 @@ export function ProfileListings() {
                                         <TableCell>
                                             <div className="flex items-center gap-3">
                                                 <div className="relative h-12 w-16 rounded-md overflow-hidden bg-muted">
-                                                    {property.images.length > 0 ? <img
+                                                    {property.images.length > 0 ? <Image
                                                         src={property.images[0]}
                                                         alt={property.title}
                                                         className="h-full w-full object-cover"
+                                                        width={48}
+                                                        height={48}
                                                     /> :
                                                         <span className="h-full w-full object-cover flex items-center justify-center text-xs text-muted-foreground">No Image</span>}
 
@@ -147,7 +149,7 @@ export function ProfileListings() {
                                                         <AlertDialogHeader>
                                                             <AlertDialogTitle>Delete Property</AlertDialogTitle>
                                                             <AlertDialogDescription>
-                                                                Are you sure you want to delete "{property.title}"? This action cannot be undone.
+                                                                Are you sure you want to delete &ldquo;{property.title}&rdquo;? This action cannot be undone.
                                                             </AlertDialogDescription>
                                                         </AlertDialogHeader>
                                                         <AlertDialogFooter>

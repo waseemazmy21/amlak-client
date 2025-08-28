@@ -1,4 +1,4 @@
-import { Square, Thermometer, MapPin, Zap, Dumbbell, Car, Bath, Shield, Calendar } from "lucide-react"
+import { Square, Thermometer, MapPin, Zap, Dumbbell, Car, Bath, Shield, Calendar, LucideIcon } from "lucide-react"
 
 export const COMMON_FEATURES = [
     "Hardwood Floors",
@@ -28,7 +28,7 @@ export const COMMON_FEATURES = [
     "New Construction",
 ]
 
-export const featureIcons: { [key: string]: any } = {
+export const featureIcons: { [key: string]: LucideIcon } = {
     "Hardwood Floors": Square,
     "Stainless Steel Appliances": Thermometer,
     "City Views": MapPin,

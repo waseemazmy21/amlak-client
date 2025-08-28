@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Camera, Bed, Bath, Square } from "lucide-react"
 import { PropertyFormData } from "@/lib/schemas/property"
@@ -18,7 +19,7 @@ export function PropertyPreview({ formData, images }: PropertyPreviewProps) {
             <CardContent className="space-y-4">
                 <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
                     {images.length > 0 ? (
-                        <img
+                        <Image
                             src={URL.createObjectURL(images[0]) || "/placeholder.svg"}
                             alt="Property preview"
                             className="w-full h-full object-cover rounded-lg"
@@ -33,7 +34,7 @@ export function PropertyPreview({ formData, images }: PropertyPreviewProps) {
                 <div>
                     <h3 className="font-semibold line-clamp-2">{formData.title || "Property Title"}</h3>
                     <p className="text-sm text-muted-foreground mt-1">
-                        {formData.city && formData.state ? `${formData.city}, ${formData.state}` : "Location"}
+                        {formData.location?.city && formData.location?.state ? `${formData.location.city}, ${formData.location.state}` : "Location"}
                     </p>
                     <p className="text-lg font-bold text-primary mt-2">
                         {formData.price ? `$${formData.price}` : "$0"}

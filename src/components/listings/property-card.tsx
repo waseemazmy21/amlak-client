@@ -2,9 +2,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import type { Property } from "@/types/property"
-import { Bed, Bath, Square, MapPin, Heart } from "lucide-react"
+import { Bed, Bath, Square, MapPin } from "lucide-react"
 
 interface PropertyCardProps {
   property: Property

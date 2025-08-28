@@ -17,24 +17,20 @@ import { handleError } from '@/lib/utils'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner'
 
-
-
 const ProfileOverview = () => {
     const { user } = useAuth()
     const queryClient = useQueryClient()
     const [isEditing, setIsEditing] = useState<boolean>(false)
 
-    if (!user) return null;
-
 
     const { handleSubmit, register, reset, formState: { isSubmitting, errors } } = useForm<UpdateUserFormData>({
         resolver: zodResolver(updateUserSchema),
-        defaultValues: user
+        defaultValues: user || {}
     })
 
     const { mutate: mutateUpdateUser, isPending } = useMutation({
         mutationFn: async (data: UpdateUserFormData) => {
-            const res = await updateUser(data, user._id);
+            const res = await updateUser(data, user!._id);
             return res.data.data.user as User
         },
         onSuccess: (user) => {
@@ -52,6 +48,7 @@ const ProfileOverview = () => {
         mutateUpdateUser(data)
     };
 
+    if (!user) return null;
 
     return (
         <div className="space-y-6">

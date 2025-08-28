@@ -8,7 +8,6 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-  type CarouselApi
 } from "@/components/ui/carousel"
 import { Grid3X3 } from "lucide-react"
 
@@ -19,7 +18,6 @@ interface FullscreenImageGalleryProps {
 
 export function FullscreenImageGallery({ images, title }: FullscreenImageGalleryProps) {
   const [selectedImage, setSelectedImage] = useState<number>(0)
-  const [mainCarouselApi, setMainCarouselApi] = useState<CarouselApi>()
 
   if (!images.length) {
     return (
@@ -49,7 +47,6 @@ export function FullscreenImageGallery({ images, title }: FullscreenImageGallery
       {/* Image Carousel */}
       {images.length > 1 && (
         <Carousel
-          setApi={setMainCarouselApi}
           className="w-full"
           opts={{
             align: "start",

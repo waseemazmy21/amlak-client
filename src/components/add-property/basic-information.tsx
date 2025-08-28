@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Home, DollarSign } from "lucide-react"
 import { PropertyFormData } from "@/lib/schemas/property"
 import { PROPERTY_TYPES } from "@/constants/property"
+import { PropertyType } from "@/types/property"
 
 
 interface BasicInformationProps {
@@ -51,7 +52,7 @@ export function BasicInformation({ register, errors, setValue }: BasicInformatio
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <Label htmlFor="propertyType">Property Type</Label>
-                        <Select onValueChange={(value) => setValue("propertyType", value as any)}>
+                        <Select onValueChange={(value: PropertyType) => setValue("propertyType", value)}>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select property type" />
                             </SelectTrigger>
