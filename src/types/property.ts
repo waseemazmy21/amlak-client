@@ -1,3 +1,5 @@
+import { User } from "@/lib/types"
+
 export type PropertyType = "house" | "apartment" | "condo" | "townhouse" | "land"
 
 export type Property = {
@@ -15,10 +17,12 @@ export type Property = {
     bathrooms: number
     area: number
     yearBuilt: number
+    status: PropertyStatus
     features: string[]
     images: string[]
     createdAt: string
     updatedAt: string
+    user?: User
 }
 
 export interface PropertyFilters {

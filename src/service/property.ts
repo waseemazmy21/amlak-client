@@ -26,5 +26,6 @@ export const getProperties = async (filters?: PropertyFilters): Promise<Property
 
 
 export const getPropertyById = async (id: string): Promise<Property> => {
-    return await api.get(`/properties/${id}`)
+    const res = await api.get(`/properties/${id}`)
+    return res.data.data.property
 }

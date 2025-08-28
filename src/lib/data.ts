@@ -1,3 +1,5 @@
+import { Square, Thermometer, MapPin, Zap, Dumbbell, Car, Bath, Shield, Calendar } from "lucide-react"
+
 export const COMMON_FEATURES = [
     "Hardwood Floors",
     "Stainless Steel Appliances",
@@ -25,3 +27,34 @@ export const COMMON_FEATURES = [
     "Recently Renovated",
     "New Construction",
 ]
+
+export const featureIcons: { [key: string]: any } = {
+    "Hardwood Floors": Square,
+    "Stainless Steel Appliances": Thermometer,
+    "City Views": MapPin,
+    Balcony: MapPin,
+    "In-unit Laundry": Zap,
+    "Gym Access": Dumbbell,
+    "Large Backyard": Square,
+    Fireplace: Thermometer,
+    "Updated Kitchen": Thermometer,
+    Garage: Car,
+    Basement: Square,
+    "Quiet Neighborhood": Shield,
+    "Private Terrace": Square,
+    "Chef's Kitchen": Thermometer,
+    "Spa Bathroom": Bath,
+    Concierge: Shield,
+    "Rooftop Access": MapPin,
+    "Historic Character": Calendar,
+    "Private Garden": Square,
+    "Exposed Brick": Square,
+    "Original Hardwood": Square,
+    "Tree-lined Street": MapPin,
+    "High Ceilings": Square,
+    "Industrial Design": Square,
+    "Large Windows": Square,
+    "Open Floor Plan": Square,
+    "Modern Finishes": Square,
+    "Warehouse Conversion": Square,
+}
