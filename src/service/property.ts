@@ -19,7 +19,6 @@ export const createProperty = (data: PropertyFormData, images: File[]) => {
 
 
 export const getProperties = async (filters?: PropertyFilters): Promise<PropertyResponse> => {
-    console.log(filters)
     const res = await api.get('/properties', { params: filters })
     return res.data.data
 }
@@ -28,4 +27,9 @@ export const getProperties = async (filters?: PropertyFilters): Promise<Property
 export const getPropertyById = async (id: string): Promise<Property> => {
     const res = await api.get(`/properties/${id}`)
     return res.data.data.property
+}
+
+export const getPropertyByUserId = async (id: string, page: number = 1): Promise<PropertyResponse> => {
+    const res = await api.get(`/properties/user/${id}`, { params: { page } })
+    return res.data.data
 }

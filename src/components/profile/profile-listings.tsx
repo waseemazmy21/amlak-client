@@ -1,16 +1,56 @@
+"use client"
+
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { PropertyCard } from "@/components/listings/property-card"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import type { Property } from "@/types/property"
-import { Edit, Eye, Home, Plus } from 'lucide-react'
+import { Edit, Home, Plus, Trash2, ExternalLink } from "lucide-react"
+import { useState } from "react"
+import { formatPrice, formatDate, handleError } from "@/lib/utils"
+import { useQuery } from "@tanstack/react-query"
+import useAuth from "@/hooks/useAuth"
+import { getPropertyByUserId } from "@/service/property"
+import Error from "@/components/global/error"
+import Loading from "../global/loading"
+import { PropertyPagination } from "../listings/property-pagination"
 
-interface ProfileListingsProps {
-    listings?: Property[]
-}
 
-export function ProfileListings({ listings = [] }: ProfileListingsProps) {
+export function ProfileListings() {
+    const { user } = useAuth()
+    const [currentPage, setCurrentPage] = useState(1)
+    if (!user) return;
+
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['userProperties', currentPage],
+        queryFn: () => getPropertyByUserId(user._id, currentPage)
+    })
+
+    const handleDelete = (propertyId: string) => {
+        confirm("Are you sure you want to delete this property?")
+    }
+
+    if (!data || error) {
+        return <Error message={handleError(error)} />
+    }
+
+    if (isLoading) {
+        return <Loading />
+    }
+
+
     return (
         <Card>
             <CardHeader>
@@ -20,7 +60,7 @@ export function ProfileListings({ listings = [] }: ProfileListingsProps) {
                         My Property Listings
                     </div>
                     <div className="flex items-center gap-2">
-                        <Badge variant="secondary">{listings.length} properties</Badge>
+                        <Badge variant="secondary">{data.properties.length} properties</Badge>
                         <Button size="sm" asChild>
                             <Link href="/add-property">
                                 <Plus className="h-4 w-4 mr-2" />
@@ -31,29 +71,104 @@ export function ProfileListings({ listings = [] }: ProfileListingsProps) {
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                {listings.length > 0 ? (
-                    <div className="grid md:grid-cols-2 gap-6">
-                        {listings.map((property) => (
-                            <div key={property._id} className="relative">
-                                <PropertyCard property={property} />
-                                <div className="absolute top-3 right-3 flex gap-2">
-                                    <Button size="sm" variant="secondary" className="h-8 px-2">
-                                        <Edit className="h-3 w-3" />
-                                    </Button>
-                                    <Button size="sm" variant="secondary" className="h-8 px-2">
-                                        <Eye className="h-3 w-3" />
-                                    </Button>
-                                </div>
-                            </div>
-                        ))}
+                {data.properties.length > 0 ? (
+                    <div className="space-y-2">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Property</TableHead>
+                                    <TableHead>Type</TableHead>
+                                    <TableHead>Price</TableHead>
+                                    <TableHead>Listed Date</TableHead>
+                                    <TableHead className="text-right">Actions</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {data.properties.map((property) => (
+                                    <TableRow key={property._id}>
+                                        <TableCell>
+                                            <div className="flex items-center gap-3">
+                                                <div className="relative h-12 w-16 rounded-md overflow-hidden bg-muted">
+                                                    {property.images.length > 0 ? <img
+                                                        src={property.images[0]}
+                                                        alt={property.title}
+                                                        className="h-full w-full object-cover"
+                                                    /> :
+                                                        <span className="h-full w-full object-cover flex items-center justify-center text-xs text-muted-foreground">No Image</span>}
+
+                                                </div>
+                                                <div>
+                                                    <div className="font-medium">{property.title}</div>
+                                                    <div className="text-sm text-muted-foreground">{property.location.address} - {property.location.city}</div>
+                                                </div>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Badge variant="outline" className="capitalize">
+                                                {property.propertyType}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell className="font-medium">{formatPrice(property.price)}</TableCell>
+                                        <TableCell className="text-muted-foreground">{formatDate(property.createdAt)}</TableCell>
+                                        <TableCell>
+                                            <div className="flex items-center justify-end gap-2">
+                                                {/* View in Public Listings */}
+                                                <Button size="sm" variant="outline" asChild className="h-8 px-2 bg-transparent">
+                                                    <Link href={`/listings/${property._id}`}>
+                                                        <ExternalLink className="h-3 w-3" />
+                                                        <span className="sr-only">View in listings</span>
+                                                    </Link>
+                                                </Button>
+
+                                                {/* Delete Property */}
+                                                <AlertDialog>
+                                                    <AlertDialogTrigger asChild>
+                                                        <Button
+                                                            size="sm"
+                                                            variant="outline"
+                                                            className="h-8 px-2 text-destructive hover:text-destructive bg-transparent"
+                                                        >
+                                                            <Trash2 className="h-3 w-3" />
+                                                            <span className="sr-only">Delete property</span>
+                                                        </Button>
+                                                    </AlertDialogTrigger>
+                                                    <AlertDialogContent>
+                                                        <AlertDialogHeader>
+                                                            <AlertDialogTitle>Delete Property</AlertDialogTitle>
+                                                            <AlertDialogDescription>
+                                                                Are you sure you want to delete "{property.title}"? This action cannot be undone.
+                                                            </AlertDialogDescription>
+                                                        </AlertDialogHeader>
+                                                        <AlertDialogFooter>
+                                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                            <AlertDialogAction
+                                                                onClick={() => handleDelete(property._id)}
+                                                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                                            >
+                                                                Delete
+                                                            </AlertDialogAction>
+                                                        </AlertDialogFooter>
+                                                    </AlertDialogContent>
+                                                </AlertDialog>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                        <PropertyPagination currentPage={currentPage} totalPages={data.totalPages} onPageChange={setCurrentPage} />
                     </div>
                 ) : (
                     <div className="text-center py-12">
                         <Home className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
                         <h3 className="font-semibold mb-2">No properties listed yet</h3>
-                        <p className="text-muted-foreground mb-4">
-                            Start by listing your first property to reach potential buyers
-                        </p>
+                        <p className="text-muted-foreground mb-4">Start by listing your first property to reach potential buyers</p>
+                        <Button asChild>
+                            <Link href="/add-property">
+                                <Plus className="h-4 w-4 mr-2" />
+                                List Your First Property
+                            </Link>
+                        </Button>
                     </div>
                 )}
             </CardContent>

@@ -47,7 +47,7 @@ export default function ProfilePage() {
                     {/* Main Content */}
                     <div className="lg:col-span-3">
                         {tab === 'overview' && <ProfileOverview />}
-                        {tab === 'listings' && <ProfileListings listings={user.properties} />}
+                        {tab === 'listings' && <ProfileListings listings={user.properties || []} />}
                     </div>
                 </div>
             </div>

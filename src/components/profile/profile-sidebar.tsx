@@ -3,8 +3,7 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Camera, Heart, Home, UserIcon } from 'lucide-react'
-import { User } from "@/lib/types"
+import { Camera, Home, UserIcon } from 'lucide-react'
 import useAuth from "@/hooks/useAuth"
 import { ProfileTabs } from "@/constants/profile"
 
@@ -38,20 +37,20 @@ export function ProfileSidebar({ tab, setTab }: ProfileSidebarProps) {
 
                 <nav className="space-y-2">
                     <Button
-                        variant="secondary"
-                        className="w-full justify-start"
+                        variant={tab === 'overview' ? 'default' : 'ghost'}
+                        className='w-full justify-start'
                         onClick={() => setTab('overview')}
                     >
                         <UserIcon className="h-4 w-4 mr-2" />
                         Overview
                     </Button>
                     <Button
-                        variant="ghost"
+                        variant={tab === 'listings' ? 'default' : 'ghost'}
                         className="w-full justify-start"
                         onClick={() => setTab('listings')}
                     >
                         <Home className="h-4 w-4 mr-2" />
-                        My Listings ({user.properties?.length || 0})
+                        My Listings
                     </Button>
                 </nav>
             </CardContent>
