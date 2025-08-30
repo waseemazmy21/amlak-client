@@ -21,7 +21,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
 
   return (
-    <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 card-enhanced">
+    <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 card-enhanced border-border border py-0">
       <div className="relative">
         <Link href={`/listings/${property._id}`}>
           <div className="relative h-48 md:h-64 w-full overflow-hidden">
@@ -38,11 +38,10 @@ export function PropertyCard({ property }: PropertyCardProps) {
                   no image
                 </div>
             }
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
           </div>
         </Link>
 
-        <Badge className={`absolute top-3 left-3 ${getStatusColor(property.status)} border text-xs font-medium`}>
+        <Badge className={`absolute top-3 left-3 ${getStatusColor(property.status)} border text-xs font-medium bg-white/20`}>
           {property.status.replace("-", " ").toUpperCase()}
         </Badge>
 
