@@ -19,15 +19,15 @@ const CTASection = () => {
               size="lg"
               variant="default"
               asChild
-              className="text-base md:text-lg px-6 md:px-8 py-4 md:py-6 bg-white/90 hover:bg-white text-gray-900 "
+              className="text-base md:text-lg px-6 md:px-8 py-4 md:py-6 bg-white/90 hover:bg-white text-gray-900"
             >
               <Link href="/listings">Start Searching Now</Link>
             </Button>
             <Button
               size="lg"
-              variant="outline"
+              variant="default"
               asChild
-              className="text-base md:text-lg px-6 md:px-8 py-4 md:py-6 bg-foreground text-background"
+              className="text-base md:text-lg px-6 md:px-8 py-4 md:py-6 bg-white/90 hover:bg-white text-gray-900"
             >
               <Link href="/add-property">List Your Property</Link>
             </Button>

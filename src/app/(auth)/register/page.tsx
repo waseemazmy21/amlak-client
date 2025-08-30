@@ -60,7 +60,7 @@ export default function RegisterPage() {
                             RealEstate
                         </span>
                     </Link>
-                    <CardTitle className="text-2xl font-bold text-gray-900 mb-2">Create Account</CardTitle>
+                    <CardTitle className="text-2xl font-bold mb-2">Create Account</CardTitle>
                     <p className="text-muted-foreground">Join our platform to find your dream property</p>                </CardHeader>
 
                 <CardContent className="space-y-6">
