@@ -122,12 +122,6 @@ const Header = () => {
                           Profile
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href="/profile?tab=settings" className="cursor-pointer">
-                          <Settings className="mr-2 h-4 w-4" />
-                          Settings
-                        </Link>
-                      </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
                         <LogOut className="mr-2 h-4 w-4" />
@@ -143,10 +137,10 @@ const Header = () => {
                     asChild
                     className="hidden lg:flex bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-sm"
                   >
-                    <Link href="/add-property">
+                    {user && <Link href="/add-property">
                       <Plus className="h-4 w-4 mr-2" />
                       List Property
-                    </Link>
+                    </Link>}
                   </Button>
                   <Button variant="ghost" size="sm" asChild className="hover:bg-primary/10 hover:text-primary">
                     <Link href="/login">Sign In</Link>
