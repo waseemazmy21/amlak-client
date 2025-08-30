@@ -57,6 +57,8 @@ export default function ListingsPage() {
         )
     }
 
+    console.log(data)
+
     return (
         <div className="min-h-screen bg-background">
             <div className="container mx-auto px-4 py-6 md:py-8">
@@ -134,6 +136,7 @@ export default function ListingsPage() {
                                     totalPages={data.totalPages}
                                     onPageChange={handlePageChange}
                                     totalItems={data.totalItems}
+                                    itemsPerPage={data.limit}
                                 />
                             </>
                         ) : (

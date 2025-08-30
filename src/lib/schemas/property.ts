@@ -1,4 +1,5 @@
 import * as z from "zod"
+import { PropertyStatus } from "../types";
 
 const VALIDATION_LIMITS = {
     MIN_YEAR_BUILT: 1800,
@@ -31,6 +32,8 @@ export const propertySchema = z.object({
     }),
 
     propertyType: z.enum(["house", "apartment", "condo", "townhouse", "land"]),
+
+    propertyStatus: z.enum(PropertyStatus),
 
     bedrooms: z
         .number()

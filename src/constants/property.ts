@@ -1,11 +1,18 @@
-import { PropertyType } from "@/types/property"
+import { PropertyStatus, PropertyType } from "@/lib/types";
 
 export const PROPERTY_TYPES: { value: PropertyType; label: string }[] = [
-    { value: "house", label: "House" },
-    { value: "apartment", label: "Apartment" },
-    { value: "condo", label: "Condo" },
-    { value: "townhouse", label: "Townhouse" },
-    { value: "land", label: "Land" },
+    { value: PropertyType.House, label: "House" },
+    { value: PropertyType.Apartment, label: "Apartment" },
+    { value: PropertyType.Condo, label: "Condo" },
+    { value: PropertyType.Townhouse, label: "Townhouse" },
+    { value: PropertyType.Land, label: "Land" },
+]
+
+export const PROPERTY_STATUS: { value: PropertyStatus; label: string }[] = [
+    { value: PropertyStatus.ForSale, label: "For Sale" },
+    { value: PropertyStatus.ForRent, label: "For Rent" },
+    { value: PropertyStatus.Sold, label: "Sold" },
+    { value: PropertyStatus.Rented, label: "Rented" },
 ]
 
 export const COMMON_FEATURES = [

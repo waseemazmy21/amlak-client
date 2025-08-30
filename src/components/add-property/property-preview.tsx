@@ -23,6 +23,8 @@ export function PropertyPreview({ formData, images }: PropertyPreviewProps) {
                             src={URL.createObjectURL(images[0]) || "/placeholder.svg"}
                             alt="Property preview"
                             className="w-full h-full object-cover rounded-lg"
+                            width={500}
+                            height={500}
                         />
                     ) : (
                         <div className="text-center">

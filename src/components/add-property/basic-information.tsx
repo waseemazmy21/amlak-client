@@ -8,8 +8,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Home, DollarSign } from "lucide-react"
 import { PropertyFormData } from "@/lib/schemas/property"
-import { PROPERTY_TYPES } from "@/constants/property"
+import { PROPERTY_STATUS, PROPERTY_TYPES } from "@/constants/property"
 import { PropertyType } from "@/types/property"
+import { PropertyStatus } from "@/lib/types"
 
 
 interface BasicInformationProps {
@@ -49,7 +50,7 @@ export function BasicInformation({ register, errors, setValue }: BasicInformatio
                     {errors.description && <p className="text-sm text-destructive">{errors.description.message}</p>}
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-3 gap-4 jus">
                     <div className="space-y-2">
                         <Label htmlFor="propertyType">Property Type</Label>
                         <Select onValueChange={(value: PropertyType) => setValue("propertyType", value)}>
@@ -65,6 +66,23 @@ export function BasicInformation({ register, errors, setValue }: BasicInformatio
                             </SelectContent>
                         </Select>
                         {errors.propertyType && <p className="text-sm text-destructive">{errors.propertyType.message}</p>}
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="propertyStatus">Property Status</Label>
+                        <Select onValueChange={(value: PropertyStatus) => setValue("propertyStatus", value)}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select property status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {PROPERTY_STATUS.map((status) => (
+                                    <SelectItem key={status.value} value={status.value}>
+                                        {status.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        {errors.propertyStatus && <p className="text-sm text-destructive">{errors.propertyStatus.message}</p>}
                     </div>
 
                     <div className="space-y-2">
