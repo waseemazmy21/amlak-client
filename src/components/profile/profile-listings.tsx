@@ -20,7 +20,7 @@ import {
 import { Home, Plus, Trash2, ExternalLink } from "lucide-react"
 import { useState } from "react"
 import { formatPrice, formatDate, handleError } from "@/lib/utils"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import useAuth from "@/hooks/useAuth"
 import { deletePropertyById, getPropertyByUserId } from "@/service/property"
 import Error from "@/components/global/error"
@@ -32,6 +32,7 @@ import { toast } from "sonner"
 export function ProfileListings() {
     const { user } = useAuth()
     const [currentPage, setCurrentPage] = useState(1)
+    const queryClient = useQueryClient()
 
     const { data, isLoading, error } = useQuery({
         queryKey: ['userProperties', currentPage],
@@ -42,6 +43,9 @@ export function ProfileListings() {
         mutationFn: deletePropertyById,
         onSuccess: () => {
             toast.success("Property deleted successfully")
+            queryClient.invalidateQueries({
+                queryKey: ['userProperties']
+            })
         },
         onError: (error) => {
             toast.error(handleError(error))
