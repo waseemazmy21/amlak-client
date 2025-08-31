@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Home, Plus, Search, User, LogOut, Settings } from "lucide-react"
+import { Home, Plus, Search, User, LogOut } from "lucide-react"
 import { MobileMenu } from "./mobile-menu"
 import useAuth from "@/hooks/useAuth"
 import { useLogout } from "@/hooks/useLogout"

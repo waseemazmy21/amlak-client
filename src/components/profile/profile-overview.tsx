@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { User } from '@/lib/types'
-import { UserIcon, Mail, Phone, Eye, Heart, Home, TrendingUp, Edit, Save, X } from 'lucide-react'
+import { UserIcon, Mail, Phone, Edit, Save, X } from 'lucide-react'
 import { useForm, SubmitHandler } from "react-hook-form"
 import { UpdateUserFormData, updateUserSchema } from '@/lib/schemas/user'
 import { zodResolver } from '@hookform/resolvers/zod'
