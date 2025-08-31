@@ -169,7 +169,7 @@ export function ProfileListings() {
                                 ))}
                             </TableBody>
                         </Table>
-                        <PropertyPagination currentPage={currentPage} totalPages={data.totalPages} onPageChange={setCurrentPage} />
+                        <PropertyPagination currentPage={currentPage} totalPages={data.totalPages} onPageChange={setCurrentPage} totalItems={data.totalItems} itemsPerPage={data.limit} />
                     </div>
                 ) : (
                     <div className="text-center py-12">

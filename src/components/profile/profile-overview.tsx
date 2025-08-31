@@ -140,7 +140,7 @@ const ProfileOverview = () => {
             </Card>
 
             {/* Quick Stats */}
-            <div className="grid md:grid-cols-4 gap-6">
+            {/* <div className="grid md:grid-cols-4 gap-6">
                 <Card>
                     <CardContent className="p-6 text-center">
                         <Eye className="h-8 w-8 mx-auto mb-2 text-primary" />
@@ -169,7 +169,7 @@ const ProfileOverview = () => {
                         <p className="text-sm text-muted-foreground">Inquiries Sent</p>
                     </CardContent>
                 </Card>
-            </div>
+            </div> */}
         </div>
     )
 }
