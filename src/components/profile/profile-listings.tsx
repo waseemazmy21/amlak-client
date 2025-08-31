@@ -43,9 +43,8 @@ export function ProfileListings() {
         mutationFn: deletePropertyById,
         onSuccess: () => {
             toast.success("Property deleted successfully")
-            queryClient.invalidateQueries({
-                queryKey: ['userProperties']
-            })
+            queryClient.invalidateQueries({ queryKey: ['userProperties'] })
+            queryClient.invalidateQueries({ queryKey: ['properties'] })
         },
         onError: (error) => {
             toast.error(handleError(error))

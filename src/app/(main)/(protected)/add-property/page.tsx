@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -23,6 +23,7 @@ export default function AddPropertyPage() {
     const [images, setImages] = useState<File[]>([])
     const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
     const router = useRouter()
+    const queryClient = useQueryClient()
 
     const {
         register,
@@ -58,6 +59,8 @@ export default function AddPropertyPage() {
         },
         onSuccess: () => {
             toast.success("Property created successfully")
+            queryClient.invalidateQueries({ queryKey: ['userProperties'] })
+            queryClient.invalidateQueries({ queryKey: ['properties'] })
             router.push("/listings")
         },
         onError: (error) => {
